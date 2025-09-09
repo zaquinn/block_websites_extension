@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="icon32.png" rel="icon" type="image/png">
+    <title>Block Extension</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: #f2f2f2;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0002;
+            display: inline-block;
+            margin: 60px auto;
+            padding: 32px 48px;
+        }
+
+        h1 {
+            color: #d32f2f;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 1.1em;
+        }
+
+        .reason {
+            margin-top: 16px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        a {
+            color: #1976d2;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Block Extension</h1>
+    <p id="msg">Este site foi bloqueado.</p>
+    <div class="reason" id="reason"></div>
+    <p style="margin-top:24px; font-size:12px;">Gerencie em: <code>chrome://extensions</code> (Opções da extensão)</p>
+</div>
+<script>
+    (function () {
+        const params = new URLSearchParams(location.search);
+        const reason = params.get('reason');
+        const pattern = params.get('pattern');
+        const map = {
+            manual: 'Bloqueio configurado pelo usuário.',
+            time: 'Limite diário de tempo atingido.',
+            auto: 'Detectado como adulto ou inseguro.'
+        };
+        const rEl = document.getElementById('reason');
+        let txt = map[reason] || 'Motivo não especificado.';
+        if (pattern) txt += ' (Padrão: ' + pattern + ')';
+        rEl.textContent = txt;
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="icon32.png" rel="icon" type="image/png">
+    <title>Block Extension - Configurações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px;
+            max-width: 780px;
+        }
+
+        h1 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+
+        section {
+            background: #fafafa;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px #0002;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        input[type=text], input[type=password], input[type=number] {
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            background: #1976d2;
+            color: #fff;
+        }
+
+        button:hover {
+            background: #1565c0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        th, td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        th {
+            text-align: left;
+            background: #f0f0f0;
+        }
+
+        .danger {
+            background: #d32f2f;
+        }
+
+        .danger:hover {
+            background: #b71c1c;
+        }
+
+        code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .small {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .inlineForm {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .inlineForm > * {
+            flex: 0 0 auto;
+        }
+
+        .limitInput {
+            width: 120px;
+        }
+
+        .saveBtn {
+            background: #388e3c;
+        }
+
+        .saveBtn:hover {
+            background: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+<h1>Configurações</h1>
+<section id="manualSitesSection">
+    <h2>Sites Bloqueados / Monitorados</h2>
+    <p class="small">Adicione domínios. Limite (min) define quanto tempo por dia pode ser usado antes do bloqueio. Sem
+        limite = bloqueio imediato.</p>
+    <form class="inlineForm" id="addManualForm">
+        <div>
+            <label style="flex-direction:column; align-items:flex-start; gap:4px;">
+                <span>Domínio</span>
+                <input id="manualPattern" placeholder="ex: facebook.com" required type="text"/>
+            </label>
+        </div>
+        <div>
+            <label style="flex-direction:column; align-items:flex-start; gap:4px;">
+                <span>Limite (min, opcional)</span>
+                <input class="limitInput" id="manualLimit" min="1" type="number"/>
+            </label>
+        </div>
+        <div>
+            <button type="submit">Adicionar</button>
+        </div>
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th style="width:220px;">Domínio</th>
+            <th style="width:180px;">Limite / Uso</th>
+            <th style="width:200px;">Editar Limite</th>
+            <th style="width:120px;">Ações</th>
+        </tr>
+        </thead>
+        <tbody id="manualList">
+        <tr>
+            <td class="small" colspan="4">Carregando...</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+<section>
+    <h2>Filtro de Conteúdo Adulto / Inseguro</h2>
+    <label>
+        <input id="adultFilterToggle" type="checkbox"/> Ativar bloqueio automático de conteúdo pornográfico / inseguro
+    </label>
+    <p class="small">Quando ativo, a extensão tenta detectar domínios adultos por palavras-chave e opcionalmente
+        consulta a Google Safe Browsing API para malware / phishing.</p>
+    <div style="margin-top:12px;">
+        <label style="flex-direction:column; align-items:flex-start; gap:4px;">
+            <span>Google Safe Browsing API Key (opcional)</span>
+            <input id="apiKeyInput" placeholder="AIza..." type="password"/>
+        </label>
+        <p class="small">A chave é usada localmente apenas para verificar ameaças (<a
+                href="https://developers.google.com/safe-browsing" target="_blank">docs</a>). Deixe em branco se não
+            quiser usar.</p>
+        <button id="saveApiKeyBtn">Salvar Chave</button>
+        <button class="danger" id="clearApiKeyBtn" style="margin-left:8px;">Remover Chave</button>
+        <span class="small" id="apiKeyStatus" style="margin-left:12px;"></span>
+    </div>
+</section>
+<section>
+    <h2>Domínios Bloqueados Automaticamente</h2>
+    <p class="small">Gerados pelo filtro. Você pode removê-los manualmente.</p>
+    <table>
+        <thead>
+        <tr>
+            <th>Domínio</th>
+            <th style="width:120px;">Ações</th>
+        </tr>
+        </thead>
+        <tbody id="autoTableBody">
+        <tr>
+            <td class="small" colspan="2">Carregando...</td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="margin-top:12px;">
+        <button class="danger" id="clearAllAuto">Limpar Todos</button>
+    </div>
+</section>
+<section>
+    <h2>Utilização Diária</h2>
+    <p class="small">Zere a contagem de tempo acumulado do dia atual.</p>
+    <button id="resetUsage">Resetar Uso de Hoje</button>
+</section>
+<script src="options.js"></script>
+</body>
+</html>
