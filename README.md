@@ -95,7 +95,7 @@ Não há dependências externas obrigatórias. Para empacotar:
 
 ## Licença
 
-MIT. Veja a aba LICENSE.
+MIT. Veja a aba MIT License.
 
 ---
 Contribuições e sugestões são bem-vindas.
